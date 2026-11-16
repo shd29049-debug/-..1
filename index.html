@@ -1,0 +1,963 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="صانع البهجة بإدارة عبد السلام - تجهيز الكوش والأفراح والهدايا والبرفانات والإكسسوارات.">
+<title>صانع البهجة | بإدارة عبد السلام</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --gold:#d6ad58;
+  --gold-light:#f8df9b;
+  --black:#080808;
+  --panel:#141414;
+  --muted:#aaa;
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--black);
+  color:var(--white);
+  overflow-x:hidden;
+}
+button,a{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.gold{color:var(--gold)}
+.container{width:min(1150px,92%);margin:auto}
+.section{padding:75px 0}
+.section-title{text-align:center;margin-bottom:35px}
+.section-title small{color:var(--gold);letter-spacing:2px}
+.section-title h2{font-size:clamp(26px,5vw,40px);margin:8px 0}
+.section-title p{color:var(--muted);font-size:14px}
+.gold-line{
+  width:75px;height:3px;background:var(--gold);
+  margin:13px auto;border-radius:20px;
+}
+.btn{
+  border:1px solid var(--gold);
+  background:linear-gradient(135deg,#f2d58d,#b98732);
+  color:#17110a;
+  padding:12px 22px;border-radius:30px;
+  font-weight:800;display:inline-flex;
+  align-items:center;justify-content:center;gap:8px;
+  transition:.3s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 28px #d6ad5840}
+.btn-outline{
+  background:transparent;color:var(--gold);
+}
+.btn-outline:hover{background:#d6ad5818}
+.muted{color:var(--muted)}
+/* Loading */
+#loader{
+  position:fixed;inset:0;background:#050505;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .7s,visibility .7s;
+}
+#loader.hide{opacity:0;visibility:hidden}
+.loader-content{text-align:center}
+.loader-logo{font-size:30px;color:var(--gold);font-weight:900}
+.loader-ring{
+  width:42px;height:42px;border:2px solid #3b3020;
+  border-top-color:var(--gold);border-radius:50%;
+  margin:22px auto;animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Cinematic intro */
+#intro{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse at center,#21190d 0%,#080808 48%,#020202 100%);
+  transition:opacity 1s,visibility 1s;
+}
+#intro.done{opacity:0;visibility:hidden;pointer-events:none}
+.intro-glow{
+  position:absolute;width:240px;height:240px;border-radius:50%;
+  background:#d6ad5830;filter:blur(80px);
+  animation:pulse 3s infinite alternate;
+}
+@keyframes pulse{to{transform:scale(1.8);opacity:.4}}
+.intro-stars{
+  position:absolute;inset:0;
+  background-image:radial-gradient(#f8df9b 1px,transparent 1px);
+  background-size:65px 65px;opacity:.22;
+  animation:stars 18s linear infinite;
+}
+@keyframes stars{to{background-position:130px 130px}}
+.intro-content{position:relative;z-index:2;padding:20px}
+.intro-kicker{color:var(--gold);letter-spacing:4px;font-size:12px}
+.intro-title{
+  font-size:clamp(40px,10vw,76px);font-weight:900;
+  margin:15px 0;color:transparent;
+  background:linear-gradient(90deg,#8d6429,#ffe6a0,#b98732,#fff0bc);
+  background-size:250%;background-clip:text;
+  -webkit-background-clip:text;
+  animation:shine 4s linear infinite,appear 1.5s ease both;
+}
+@keyframes shine{to{background-position:250%}}
+@keyframes appear{from{opacity:0;transform:translateY(30px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+.intro-sub{color:#ddd;margin-bottom:27px}
+.intro-enter{animation:appear 2s .5s both}
+.skip-intro{
+  position:absolute;bottom:25px;left:25px;
+  background:transparent;color:#aaa;border:0;font-size:13px;
+}
+/* Header */
+header{
+  position:sticky;top:0;z-index:100;
+  background:#090909ed;backdrop-filter:blur(14px);
+  border-bottom:1px solid #d6ad5830;
+}
+.nav{
+  min-height:72px;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;
+}
+.brand{font-size:21px;font-weight:900;color:var(--gold)}
+.brand span{display:block;font-size:10px;color:#aaa;font-weight:400}
+.nav-links{display:flex;align-items:center;gap:18px}
+.nav-links a{font-size:13px;color:#ddd;transition:.2s}
+.nav-links a:hover{color:var(--gold)}
+.menu-toggle{
+  display:none;background:none;color:var(--gold);
+  border:1px solid #d6ad5860;border-radius:10px;padding:7px 12px;
+}
+/* Hero */
+.hero{
+  min-height:570px;display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  background:
+  linear-gradient(90deg,#050505d9,#05050570),
+  url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=85') center/cover;
+}
+.hero:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,#080808 0%,transparent 35%,#08080855 100%);
+}
+.hero-content{position:relative;z-index:2;max-width:700px;padding:75px 0}
+.hero-tag{color:var(--gold);font-size:14px}
+.hero h1{font-size:clamp(36px,7vw,66px);line-height:1.4;margin:13px 0}
+.hero p{color:#ddd;line-height:2;max-width:570px;margin-bottom:25px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stamp{
+  display:inline-block;margin-top:28px;padding:9px 17px;
+  border:1px solid #d6ad5860;border-radius:30px;color:#e7c77f;font-size:12px;
+}
+/* Categories */
+.category-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:17px;
+}
+.category-card{
+  border:1px solid #d6ad5840;border-radius:18px;
+  background:linear-gradient(145deg,#1c1a16,#101010);
+  padding:27px 15px;text-align:center;transition:.35s;
+  cursor:pointer;min-height:170px;
+}
+.category-card:hover{
+  transform:translateY(-7px);border-color:var(--gold);
+  box-shadow:0 12px 35px #d6ad5820;
+}
+.category-icon{font-size:38px;display:block;margin-bottom:10px}
+.category-card h3{font-size:17px;color:var(--gold)}
+.category-card p{font-size:12px;color:#aaa;margin-top:5px}
+/* Panels */
+.view-panel{display:none;animation:appear .5s ease}
+.view-panel.active{display:block}
+.back-row{margin-bottom:25px}
+.back-btn{background:none;color:var(--gold);border:0;padding:8px 0}
+.panel-heading{text-align:center;margin:15px 0 30px}
+.panel-heading h2{font-size:30px;color:var(--gold)}
+.panel-heading p{color:#aaa;font-size:13px;margin-top:7px}
+/* Marquee gallery */
+.gallery-window{
+  overflow:hidden;border-radius:18px;
+  border:1px solid #d6ad5830;
+  background:#111;padding:12px 0;
+}
+.gallery-track{
+  display:flex;gap:14px;width:max-content;
+  animation:marquee 65s linear infinite;
+}
+.gallery-window:hover .gallery-track{animation-play-state:paused}
+.gallery-track.reverse{animation-direction:reverse}
+.gallery-window:active .gallery-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(50%)}}
+.gallery-card{
+  width:280px;height:210px;flex:none;
+  border-radius:13px;overflow:hidden;position:relative;
+  cursor:zoom-in;background:#222;
+}
+.gallery-card img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.gallery-card:hover img{transform:scale(1.08)}
+.gallery-card:after{
+  content:"اضغط للمشاهدة";position:absolute;bottom:0;right:0;left:0;
+  padding:25px 12px 10px;text-align:center;font-size:12px;
+  background:linear-gradient(transparent,#000b);opacity:0;transition:.3s;
+}
+.gallery-card:hover:after{opacity:1}
+.gallery-note{text-align:center;color:#999;font-size:12px;margin:14px 0}
+/* Product cards */
+.product-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.product-card{
+  border:1px solid #d6ad5835;border-radius:17px;overflow:hidden;
+  background:#141414;transition:.3s;
+}
+.product-card:hover{transform:translateY(-5px);border-color:var(--gold)}
+.product-card img{width:100%;height:220px;object-fit:cover}
+.product-info{padding:15px}
+.product-info h3{color:var(--gold);font-size:17px}
+.product-info p{color:#aaa;font-size:12px;margin-top:5px;line-height:1.8}
+.product-info button{margin-top:12px;width:100%}
+/* Gift surprise */
+.surprise-box{
+  max-width:700px;margin:25px auto 0;padding:30px 20px;
+  text-align:center;border:1px solid #d6ad5860;border-radius:22px;
+  background:radial-gradient(circle at top,#392a13,#111 65%);
+}
+.gift-emoji{font-size:65px;display:block;animation:bob 2s infinite}
+@keyframes bob{50%{transform:translateY(-9px) rotate(4deg)}}
+.surprise-message{display:none;margin-top:17px;color:#f6dda0;line-height:2}
+.surprise-message.show{display:block;animation:appear .7s}
+/* Services and occasions */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info-card{
+  padding:23px;border:1px solid #d6ad5835;
+  border-radius:16px;background:#121212;
+}
+.info-card .symbol{font-size:30px}
+.info-card h3{color:var(--gold);margin:8px 0}
+.info-card p{color:#aaa;font-size:13px;line-height:1.9}
+.occasion-box{
+  padding:25px;border:1px solid #d6ad5850;border-radius:20px;
+  background:#121212;text-align:center;
+}
+.occasion-options{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0}
+.occasion-options button{
+  padding:10px 17px;border:1px solid #d6ad5860;
+  border-radius:25px;background:#1a1a1a;color:#eee;
+}
+.occasion-options button.selected{background:var(--gold);color:#111}
+#occasionResult{color:#e9cf91;line-height:2;margin:12px 0}
+/* Tour */
+.tour-box{
+  border:1px solid #d6ad5860;border-radius:20px;
+  padding:28px;text-align:center;background:#15120d;
+}
+.tour-step{color:var(--gold);font-size:12px}
+.tour-box h3{font-size:24px;margin:10px}
+.tour-box p{color:#bbb;font-size:14px;line-height:2}
+.tour-actions{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+/* Reviews / FAQ */
+.review-placeholder{
+  text-align:center;padding:30px;border:1px dashed #d6ad5860;
+  border-radius:16px;color:#aaa;line-height:2;
+}
+details{
+  background:#141414;border:1px solid #d6ad5830;
+  border-radius:12px;padding:15px 18px;margin:10px 0;
+}
+summary{cursor:pointer;color:var(--gold);font-weight:700}
+details p{color:#bbb;font-size:13px;line-height:2;margin-top:10px}
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.contact-link{
+  display:flex;align-items:center;gap:14px;
+  padding:18px;border:1px solid #d6ad5840;
+  background:#141414;border-radius:15px;transition:.3s;
+}
+.contact-link:hover{border-color:var(--gold);transform:translateY(-3px)}
+.contact-icon{font-size:28px}
+.contact-link strong{display:block;color:var(--gold)}
+.contact-link small{color:#aaa;font-size:12px}
+/* Footer */
+footer{border-top:1px solid #d6ad5830;padding:35px 0;text-align:center}
+footer .brand{font-size:25px}
+footer p{color:#888;font-size:12px;margin:10px 0}
+.socials{display:flex;justify-content:center;gap:12px;margin:18px 0}
+.socials a{
+  width:42px;height:42px;border:1px solid #d6ad5860;
+  border-radius:50%;display:grid;place-items:center;color:var(--gold);
+  font-weight:800;transition:.3s;
+}
+.socials a:hover{background:var(--gold);color:#111}
+/* Floating actions */
+.floating-actions{
+  position:fixed;left:15px;bottom:18px;z-index:500;
+  display:flex;flex-direction:column;gap:9px;
+}
+.float-btn{
+  border:0;border-radius:30px;padding:11px 15px;
+  background:#d6ad58;color:#17110a;font-weight:800;
+  box-shadow:0 5px 20px #0008;font-size:12px;
+}
+.float-btn.dark{background:#171717;color:var(--gold);border:1px solid var(--gold)}
+#topBtn{
+  display:none;position:fixed;right:16px;bottom:20px;z-index:500;
+  width:43px;height:43px;border-radius:50%;
+  border:1px solid var(--gold);background:#151515;color:var(--gold);
+  font-size:20px;
+}
+/* Lightbox */
+#lightbox{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:#000e;align-items:center;justify-content:center;padding:20px;
+}
+#lightbox.show{display:flex}
+#lightbox img{max-width:95%;max-height:85vh;border-radius:12px}
+#lightboxClose{
+  position:absolute;top:18px;left:20px;border:0;
+  background:#222;color:white;font-size:25px;border-radius:50%;
+  width:42px;height:42px;
+}
+/* Reveal */
+.reveal{opacity:0;transform:translateY(20px);transition:.7s}
+.reveal.visible{opacity:1;transform:none}
+@media(max-width:800px){
+  .nav-links{
+    display:none;position:absolute;top:72px;right:0;left:0;
+    background:#0d0d0d;padding:20px;flex-direction:column;
+    border-bottom:1px solid #d6ad5840;
+  }
+  .nav-links.open{display:flex}
+  .menu-toggle{display:block}
+  .category-grid{grid-template-columns:repeat(2,1fr)}
+  .product-grid{grid-template-columns:repeat(2,1fr)}
+  .info-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-card{width:235px;height:180px}
+  .hero{min-height:520px}
+}
+@media(max-width:520px){
+  .section{padding:55px 0}
+  .hero{min-height:490px}
+  .hero-content{padding:55px 0}
+  .product-grid,.info-grid,.contact-grid{grid-template-columns:1fr}
+  .product-card img{height:230px}
+  .category-card{min-height:145px;padding:20px 10px}
+  .category-icon{font-size:32px}
+  .floating-actions{left:9px;bottom:12px}
+  .float-btn{font-size:11px;padding:9px 12px}
+  #topBtn{bottom:70px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+
+<!-- شاشة التحميل -->
+<div id="loader">
+  <div class="loader-content">
+    <div class="loader-logo">صانع البهجة</div>
+    <div class="loader-ring"></div>
+    <small class="muted">بنجهزلك تجربة مختلفة...</small>
+  </div>
+</div>
+
+<!-- الافتتاحية السينمائية -->
+<div id="intro">
+  <div class="intro-stars"></div>
+  <div class="intro-glow"></div>
+  <div class="intro-content">
+    <div class="intro-kicker">WELCOME TO</div>
+    <div class="intro-title">صانع البهجة</div>
+    <p class="intro-sub">كل لحظة جميلة تستحق لمسة استثنائية</p>
+    <button class="btn intro-enter" onclick="enterSite()">ادخل عالم صانع البهجة ✨</button>
+  </div>
+  <button class="skip-intro" onclick="enterSite()">تخطي المقدمة</button>
+</div>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="brand" onclick="showHome();return false">
+      صانع البهجة
+      <span>بإدارة عبد السلام</span>
+    </a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" onclick="showHome()">الرئيسية</a>
+      <a href="#categories" onclick="showHome()">الأقسام</a>
+      <a href="#occasions" onclick="showHome()">اختار مناسبتك</a>
+      <a href="#about" onclick="showHome()">من نحن</a>
+      <a href="#contact" onclick="showHome()">تواصل معنا</a>
+    </nav>
+  </div>
+</header>
+
+<main id="homeView">
+  <section class="hero" id="home">
+    <div class="container hero-content">
+      <span class="hero-tag">✨ أهلاً بيكم في صانع البهجة</span>
+      <h1>بنصنع لحظات<br><span class="gold">تفضل في الذاكرة</span></h1>
+      <p>
+        من تجهيز الكوش والأفراح، للهدايا والبوكسات،
+        للبرفانات والإكسسوارات... بنهتم بالتفاصيل اللي بتصنع البهجة.
+      </p>
+      <div class="hero-actions">
+        <button class="btn" onclick="document.getElementById('categories').scrollIntoView()">اكتشف أقسامنا</button>
+        <a class="btn btn-outline" href="https://wa.me/201013918098" target="_blank" rel="noopener">اطلب على واتساب</a>
+      </div>
+      <div class="hero-stamp">صانع البهجة – بإدارة عبد السلام</div>
+    </div>
+  </section>
+
+  <!-- الأقسام -->
+  <section class="section container" id="categories">
+    <div class="section-title reveal">
+      <small>EXPLORE OUR WORLD</small>
+      <h2>اكتشف <span class="gold">أقسامنا</span></h2>
+      <div class="gold-line"></div>
+      <p>اختار القسم اللي حابب تشوفه</p>
+    </div>
+    <div class="category-grid">
+      <div class="category-card reveal" onclick="openPanel('kosha')">
+        <span class="category-icon">💍</span>
+        <h3>الكوش والأفراح</h3><p>تفاصيل تليق بيومك</p>
+      </div>
+      <div class="category-card reveal" onclick="openPanel('perfumes')">
+        <span class="category-icon">🌹</span>
+        <h3>البرفانات</h3><p>اختيارات بروائح مميزة</p>
+      </div>
+      <div class="category-card reveal" onclick="openPanel('gifts')">
+        <span class="category-icon">🎁</span>
+        <h3>الهدايا والبوكسات</h3><p>هدايا بتفرّح من القلب</p>
+      </div>
+      <div class="category-card reveal" onclick="openPanel('accessories')">
+        <span class="category-icon">💎</span>
+        <h3>الإكسسوارات</h3><p>لمسات تكمل أناقتك</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- صندوق المفاجأة -->
+  <section class="section container">
+    <div class="section-title reveal">
+      <small>A LITTLE SURPRISE</small>
+      <h2>عندنا ليك <span class="gold">مفاجأة</span></h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="surprise-box reveal">
+      <span class="gift-emoji" id="giftEmoji">🎁</span>
+      <h3 class="gold">افتح مفاجأتك</h3>
+      <p class="muted">اضغط على الصندوق واكتشف رسالتنا ليك</p>
+      <button class="btn" style="margin-top:17px" onclick="openSurprise()">افتح الهدية</button>
+      <div class="surprise-message" id="surpriseMessage">
+        <h3>أهلاً بيك في صانع البهجة ❤️</h3>
+        <p>وجودك عندنا يسعدنا، ونتمنى نكون جزء من أجمل لحظاتك.</p>
+        <p>اختار اللي يعجبك وسيب علينا مهمة التفاصيل!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- الأكثر تميزًا -->
+  <section class="section container">
+    <div class="section-title reveal">
+      <small>OUR HIGHLIGHTS</small>
+      <h2>لحظات صُنعت <span class="gold">للبهجة</span></h2>
+      <div class="gold-line"></div>
+      <p>لقطات من عالم صانع البهجة</p>
+    </div>
+    <div class="info-grid">
+      <div class="info-card reveal"><div class="symbol">✨</div><h3>تفاصيل تصنع الفرق</h3><p>كل تفصيلة صغيرة ممكن تحول المناسبة لذكرى كبيرة.</p></div>
+      <div class="info-card reveal"><div class="symbol">💐</div><h3>أجمل تجهيزات الأفراح</h3><p>شوف صور وفيديوهات تجهيزات الكوش في قسم الأفراح.</p></div>
+      <div class="info-card reveal"><div class="symbol">🎁</div><h3>هدايا بتفرّح من القلب</h3><p>اكتشف أفكار الهدايا والبوكسات في قسم الهدايا.</p></div>
+    </div>
+  </section>
+
+  <!-- اختيار المناسبة -->
+  <section class="section container" id="occasions">
+    <div class="section-title reveal">
+      <small>FIND YOUR IDEA</small>
+      <h2>اختار <span class="gold">مناسبتك</span></h2>
+      <div class="gold-line"></div>
+      <p>اختار المناسبة وشوف القسم اللي ممكن يساعدك</p>
+    </div>
+    <div class="occasion-box reveal">
+      <h3>مناسبتك إيه؟</h3>
+      <div class="occasion-options">
+        <button onclick="chooseOccasion(this,'wedding')">💍 فرح أو خطوبة</button>
+        <button onclick="chooseOccasion(this,'birthday')">🎂 عيد ميلاد</button>
+        <button onclick="chooseOccasion(this,'gift')">🎁 عايز هدية</button>
+        <button onclick="chooseOccasion(this,'personal')">🌹 استخدام شخصي</button>
+      </div>
+      <div id="occasionResult">اختار مناسبة من الاختيارات اللي فوق.</div>
+      <button class="btn btn-outline" id="occasionGo" style="display:none" onclick="goOccasion()">شوف القسم المناسب</button>
+    </div>
+  </section>
+
+  <!-- جولة الموقع -->
+  <section class="section container">
+    <div class="section-title reveal">
+      <small>TAKE A TOUR</small>
+      <h2>خد لفة في <span class="gold">صانع البهجة</span></h2>
+      <div class="gold-line"></div>
+      <p>جولة سريعة تعرفك على أقسامنا</p>
+    </div>
+    <div class="tour-box reveal">
+      <div class="tour-step" id="tourStep">جولة تعريفية</div>
+      <h3 id="tourTitle">جاهز تاخد لفة؟</h3>
+      <p id="tourText">هنعرفك على أقسام صانع البهجة في خطوات بسيطة.</p>
+      <div class="tour-actions">
+        <button class="btn" id="tourNext" onclick="nextTour()">ابدأ الجولة ✨</button>
+        <button class="btn btn-outline" onclick="endTour()">تخطي الجولة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- من نحن -->
+  <section class="section container" id="about">
+    <div class="section-title reveal">
+      <small>ABOUT US</small>
+      <h2>حكاية <span class="gold">صانع البهجة</span></h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="info-card reveal" style="text-align:center">
+      <h3 style="font-size:23px">صانع البهجة – بإدارة عبد السلام</h3>
+      <p style="font-size:15px">
+        متخصصون في تجهيز الكوش والأفراح والمناسبات،
+        وتقديم الهدايا والبوكسات والإكسسوارات والبرفانات،
+        لنشارككم أجمل لحظاتكم ونساعدكم تختاروا التفاصيل اللي تناسب مناسباتكم.
+      </p>
+    </div>
+  </section>
+
+  <!-- آراء العملاء -->
+  <section class="section container">
+    <div class="section-title reveal">
+      <small>CLIENT EXPERIENCES</small>
+      <h2>آراء <span class="gold">عملائنا</span></h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="review-placeholder reveal">
+      <div style="font-size:35px">💬</div>
+      <h3 class="gold">رأيكم يهمنا</h3>
+      <p>هنعرض هنا تجارب وآراء عملائنا الحقيقية بعد إضافتها بموافقتهم.</p>
+      <a class="btn" style="margin-top:15px" href="https://wa.me/201013918098?text=%D8%AD%D8%A7%D8%A8%D8%A8%20%D8%A3%D8%B4%D8%A7%D8%B1%D9%83%20%D8%B1%D8%A3%D9%8A%D9%8A%20%D9%85%D8%B9%D8%A7%D9%83%D9%85" target="_blank" rel="noopener">شاركنا رأيك</a>
+    </div>
+  </section>
+
+  <!-- الأسئلة الشائعة -->
+  <section class="section container">
+    <div class="section-title reveal">
+      <small>FAQ</small>
+      <h2>أسئلة <span class="gold">بتتكرر</span></h2>
+      <div class="gold-line"></div>
+    </div>
+    <details><summary>إزاي أستفسر عن تجهيز كوشة أو مناسبة؟</summary><p>تقدر تتواصل مع المحل مباشرة على واتساب وتبعت تفاصيل المناسبة والطلبات اللي محتاجها.</p></details>
+    <details><summary>إزاي أعرف الأسعار والتوافر؟</summary><p>الأسعار والتوافر بتتحدد حسب المنتج أو تفاصيل الطلب. تواصل مع المحل للتأكد من التفاصيل.</p></details>
+    <details><summary>إزاي أطلب هدية أو بوكس بتصميم خاص؟</summary><p>اضغط على زر اطلب تصميم خاص، واكتب فكرتك وتفاصيل الهدية على واتساب.</p></details>
+    <details><summary>إزاي أوصل للمحل؟</summary><p>اضغط على زر مكاننا أو مشاركة الموقع لفتح موقع المحل على خرائط Google.</p></details>
+  </section>
+
+  <!-- التواصل -->
+  <section class="section container" id="contact">
+    <div class="section-title reveal">
+      <small>GET IN TOUCH</small>
+      <h2>تواصل <span class="gold">معانا</span></h2>
+      <div class="gold-line"></div>
+      <p>يسعدنا تواصلك واستفسارك</p>
+    </div>
+    <div class="contact-grid">
+      <a class="contact-link reveal" href="https://wa.me/201013918098" target="_blank" rel="noopener">
+        <span class="contact-icon">💬</span><span><strong>واتساب المحل</strong><small>راسلنا مباشرة</small></span>
+      </a>
+      <a class="contact-link reveal" href="tel:+201013918098">
+        <span class="contact-icon">📞</span><span><strong>اتصل بنا</strong><small>مكالمة مباشرة</small></span>
+      </a>
+      <a class="contact-link reveal" href="https://maps.app.goo.gl/tGQ2w8oJ1gVLarTo8?g_st=ac" target="_blank" rel="noopener">
+        <span class="contact-icon">📍</span><span><strong>مكاننا على الخريطة</strong><small>افتح Google Maps</small></span>
+      </a>
+      <button class="contact-link reveal" onclick="shareLocation()" style="color:white;text-align:right">
+        <span class="contact-icon">📤</span><span><strong>شارك موقع المحل</strong><small>ابعته لأصحابك</small></span>
+      </button>
+      <a class="contact-link reveal" href="https://www.instagram.com/abdonagy152/" target="_blank" rel="noopener">
+        <span class="contact-icon">📸</span><span><strong>Instagram</strong><small>@abdonagy152</small></span>
+      </a>
+      <a class="contact-link reveal" href="https://www.tiktok.com/@abdo_nagy4" target="_blank" rel="noopener">
+        <span class="contact-icon">🎵</span><span><strong>TikTok</strong><small>@abdo_nagy4</small></span>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:25px">
+      <a class="btn" href="https://wa.me/201013918098?text=%D8%A3%D9%87%D9%84%D8%A7%D9%8B%20%D8%B5%D8%A7%D9%86%D8%B9%20%D8%A7%D9%84%D8%A8%D9%87%D8%AC%D8%A9%D8%8C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B3%D8%AA%D9%81%D8%B3%D8%B1%20%D8%B9%D9%86%20%D8%B7%D9%84%D8%A8." target="_blank" rel="noopener">اطلب بهجتك الآن ✨</a>
+      <a class="btn btn-outline" style="margin-right:7px" href="https://wa.me/201013918098?text=%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B7%D9%84%D8%A8%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%AE%D8%A7%D8%B5." target="_blank" rel="noopener">اطلب تصميم خاص</a>
+    </div>
+  </section>
+</main>
+
+<!-- صفحات الأقسام -->
+<main id="panelView" class="container section view-panel">
+  <div class="back-row"><button class="back-btn" onclick="showHome()">← الرجوع للرئيسية</button></div>
+
+  <section id="kosha" class="view-panel">
+    <div class="panel-heading"><h2>💍 الكوش والأفراح</h2><p>تفاصيل تليق بأجمل يوم في حياتك</p></div>
+    <div class="gallery-window"><div class="gallery-track" id="koshaGallery"></div></div>
+    <p class="gallery-note">الصور بتتحرك تلقائيًا وببطء – اضغط على أي صورة لمشاهدتها</p>
+    <div class="gallery-window" style="margin-top:22px"><div class="gallery-track reverse" id="videoGallery"></div></div>
+    <p class="gallery-note">فيديوهات من أعمال وتجهيزات المحل</p>
+    <div style="text-align:center;margin-top:25px"><a class="btn" href="https://wa.me/201013918098?text=%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B3%D8%AA%D9%81%D8%B3%D8%B1%20%D8%B9%D9%86%20%D8%AA%D8%AC%D9%87%D9%8A%D8%B2%20%D9%83%D9%88%D8%B4%D8%A9." target="_blank" rel="noopener">استفسر عن تجهيز كوشة</a></div>
+  </section>
+
+  <section id="perfumes" class="view-panel">
+    <div class="panel-heading"><h2>🌹 عالم البرفانات</h2><p>اختيارات بروائح وأسماء متنوعة</p></div>
+    <div class="product-grid" id="perfumeGrid"></div>
+    <p class="gallery-note">الصور توضيحية، اسأل المحل عن الأنواع المتاحة.</p>
+  </section>
+
+  <section id="gifts" class="view-panel">
+    <div class="panel-heading"><h2>🎁 الهدايا والبوكسات</h2><p>أفكار هدايا وتغليف يفرّح اللي بتحبه</p></div>
+    <div class="gallery-window"><div class="gallery-track" id="giftGallery"></div></div>
+    <p class="gallery-note">صور توضيحية لأفكار الهدايا والبوكسات</p>
+    <div style="text-align:center;margin-top:25px"><a class="btn" href="https://wa.me/201013918098?text=%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B3%D8%AA%D9%81%D8%B3%D8%B1%20%D8%B9%D9%86%20%D8%A7%D9%84%D9%87%D8%AF%D8%A7%D9%8A%D8%A7%20%D9%88%D8%A7%D9%84%D8%A8%D9%88%D9%83%D8%B3%D8%A7%D8%AA." target="_blank" rel="noopener">اطلب هديتك</a></div>
+  </section>
+
+  <section id="accessories" class="view-panel">
+    <div class="panel-heading"><h2>💎 الإكسسوارات</h2><p>لمسات صغيرة تكمل أناقتك</p></div>
+    <div class="gallery-window"><div class="gallery-track" id="accessoryGallery"></div></div>
+    <p class="gallery-note">صور توضيحية للإكسسوارات – اسأل عن المتاح بالمحل.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="brand">صانع البهجة</div>
+    <p>بإدارة عبد السلام</p>
+    <div class="socials">
+      <a href="https://www.instagram.com/abdonagy152/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+      <a href="https://www.tiktok.com/@abdo_nagy4" target="_blank" rel="noopener" aria-label="TikTok">♪</a>
+      <a href="https://wa.me/201013918098" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+      <a href="https://maps.app.goo.gl/tGQ2w8oJ1gVLarTo8?g_st=ac" target="_blank" rel="noopener" aria-label="Maps">📍</a>
+    </div>
+    <p>كل لحظة جميلة تستحق لمسة من البهجة ✨</p>
+    <p>© <span id="year"></span> صانع البهجة – جميع الحقوق محفوظة</p>
+  </div>
+</footer>
+
+<div class="floating-actions">
+  <a class="float-btn" href="https://wa.me/201013918098" target="_blank" rel="noopener">💬 اطلب بهجتك</a>
+  <button class="float-btn dark" onclick="shareLocation()">📍 شارك موقعنا</button>
+</div>
+<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="العودة للأعلى">↑</button>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightboxClose" onclick="closeLightbox()">×</button>
+  <img id="lightboxImage" src="" alt="صورة مكبرة">
+</div>
+
+<script>
+/* الروابط الأساسية */
+const WHATSAPP = "https://wa.me/201013918098";
+const MAP_LINK = "https://maps.app.goo.gl/tGQ2w8oJ1gVLarTo8?g_st=ac";
+
+/* صور الكوش: تم حذف أول أربع صور من القائمة القديمة */
+const koshaImages = [
+  "https://files.catbox.moe/mw4ths.jpg",
+  "https://files.catbox.moe/meg0ap.jpg",
+  "https://files.catbox.moe/4elbsr.jpg",
+  "https://files.catbox.moe/6zodvc.jpg",
+  "https://files.catbox.moe/mr6zej.jpg",
+  "https://files.catbox.moe/uehjar.jpg",
+  "https://files.catbox.moe/2ln6tx.jpg"
+];
+
+/* فيديوهات الأعمال */
+const workVideos = [
+  "https://files.catbox.moe/299tqc.mp4",
+  "https://files.catbox.moe/k8f48u.mp4",
+  "https://files.catbox.moe/ezhu7z.mp4"
+];
+
+/* صور الهدايا التوضيحية */
+const giftImages = [
+  "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1607344645866-009c320b63e0?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1513883049090-d0b7439799bf?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=85"
+];
+
+/* صور الإكسسوارات التوضيحية */
+const accessoryImages = [
+  "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=800&q=85",
+  "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=800&q=85"
+];
+
+/* البرفانات: أسماء وصور توضيحية */
+const perfumes = [
+  {
+    name:"Dior Sauvage",
+    desc:"عطر رجالي معروف بطابعه المنعش.",
+    image:"https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=85"
+  },
+  {
+    name:"Bleu de Chanel",
+    desc:"اسم من الأسماء المعروفة في عالم العطور.",
+    image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=85"
+  },
+  {
+    name:"YSL Y",
+    desc:"اختيار عطري بطابع عصري.",
+    image:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=85"
+  },
+  {
+    name:"Versace Eros",
+    desc:"عطر يحمل طابعًا مميزًا.",
+    image:"https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&w=800&q=85"
+  },
+  {
+    name:"1 Million",
+    desc:"من الأسماء الشهيرة في العطور.",
+    image:"https://images.unsplash.com/photo-1590736969955-71cc94901144?auto=format&fit=crop&w=800&q=85"
+  },
+  {
+    name:"Baccarat Rouge 540",
+    desc:"اسم مشهور في عالم العطور الفاخرة.",
+    image:"https://images.unsplash.com/photo-1590156221515-6f7e6b6c7f9c?auto=format&fit=crop&w=800&q=85"
+  }
+];
+
+/* إنشاء صور المعارض */
+function galleryCard(src,alt){
+  const card=document.createElement("div");
+  card.className="gallery-card";
+  const img=document.createElement("img");
+  img.src=src;
+  img.alt=alt;
+  img.loading="lazy";
+  img.onclick=()=>openLightbox(src);
+  card.appendChild(img);
+  return card;
+}
+function fillGallery(id,images,label){
+  const track=document.getElementById(id);
+  if(!track)return;
+  track.innerHTML="";
+  const all=[...images,...images];
+  all.forEach(src=>track.appendChild(galleryCard(src,label)));
+}
+
+/* معرض الكوش */
+fillGallery("koshaGallery",koshaImages,"تجهيزات الكوش والأفراح");
+
+/* معرض الهدايا والإكسسوارات */
+fillGallery("giftGallery",giftImages,"أفكار هدايا");
+fillGallery("accessoryGallery",accessoryImages,"إكسسوارات");
+
+/* معرض الفيديو */
+const videoTrack=document.getElementById("videoGallery");
+workVideos.forEach(src=>{
+  const card=document.createElement("div");
+  card.className="gallery-card";
+  card.style.cursor="default";
+  const video=document.createElement("video");
+  video.src=src;
+  video.controls=true;
+  video.preload="metadata";
+  video.playsInline=true;
+  video.style.width="100%";
+  video.style.height="100%";
+  video.style.objectFit="cover";
+  card.appendChild(video);
+  videoTrack.appendChild(card);
+});
+
+/* عرض البرفانات */
+const perfumeGrid=document.getElementById("perfumeGrid");
+perfumes.forEach(item=>{
+  const card=document.createElement("article");
+  card.className="product-card reveal";
+  card.innerHTML=`
+    <img src="${item.image}" alt="${item.name}" loading="lazy">
+    <div class="product-info">
+      <h3>${item.name}</h3>
+      <p>${item.desc}</p>
+      <a class="btn btn-outline" style="width:100%;margin-top:12px"
+         href="${WHATSAPP}?text=${encodeURIComponent("أهلاً، عايز أستفسر عن عطر "+item.name)}"
+         target="_blank" rel="noopener">استفسر عن العطر</a>
+    </div>`;
+  perfumeGrid.appendChild(card);
+});
+
+/* الافتتاحية */
+function enterSite(){
+  document.getElementById("intro").classList.add("done");
+  sessionStorage.setItem("bahgaIntroSeen","yes");
+}
+window.addEventListener("load",()=>{
+  document.getElementById("loader").classList.add("hide");
+  if(sessionStorage.getItem("bahgaIntroSeen")==="yes"){
+    document.getElementById("intro").classList.add("done");
+  }
+});
+document.getElementById("year").textContent=new Date().getFullYear();
+
+/* التنقل بين صفحات الأقسام */
+function openPanel(id){
+  document.getElementById("homeView").style.display="none";
+  document.getElementById("panelView").classList.add("active");
+  document.querySelectorAll("#panelView > section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("navLinks").classList.remove("open");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function showHome(){
+  document.getElementById("panelView").classList.remove("active");
+  document.querySelectorAll("#panelView > section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("homeView").style.display="block";
+  document.getElementById("navLinks").classList.remove("open");
+}
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("open");
+}
+
+/* صندوق المفاجأة */
+function openSurprise(){
+  document.getElementById("giftEmoji").textContent="🎉";
+  document.getElementById("surpriseMessage").classList.add("show");
+}
+
+/* تكبير الصور */
+function openLightbox(src){
+  const box=document.getElementById("lightbox");
+  document.getElementById("lightboxImage").src=src;
+  box.classList.add("show");
+}
+function closeLightbox(){
+  document.getElementById("lightbox").classList.remove("show");
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeLightbox();
+});
+
+/* اختيار المناسبة */
+let selectedOccasion="";
+const occasionData={
+  wedding:{
+    text:"ممكن تبدأ من قسم الكوش والأفراح وتشوف التجهيزات.",
+    panel:"kosha"
+  },
+  birthday:{
+    text:"شوف أفكار الهدايا والبوكسات المناسبة للمناسبة.",
+    panel:"gifts"
+  },
+  gift:{
+    text:"قسم الهدايا والبوكسات فيه أفكار تلهمك.",
+    panel:"gifts"
+  },
+  personal:{
+    text:"تقدر تستكشف البرفانات والإكسسوارات.",
+    panel:"perfumes"
+  }
+};
+function chooseOccasion(button,type){
+  document.querySelectorAll(".occasion-options button").forEach(b=>b.classList.remove("selected"));
+  button.classList.add("selected");
+  selectedOccasion=type;
+  document.getElementById("occasionResult").textContent=occasionData[type].text;
+  document.getElementById("occasionGo").style.display="inline-flex";
+}
+function goOccasion(){
+  if(selectedOccasion)openPanel(occasionData[selectedOccasion].panel);
+}
+
+/* الجولة التعريفية */
+const tourSteps=[
+  {title:"أهلاً بيك في صانع البهجة",text:"هنا بنشاركك أفكار وتفاصيل تساعدك في مناسباتك الجميلة.",panel:null},
+  {title:"الكوش والأفراح 💍",text:"شوف صور وفيديوهات من تجهيزات الكوش والأفراح.",panel:"kosha"},
+  {title:"الهدايا والبوكسات 🎁",text:"اكتشف أفكار الهدايا والتغليف.",panel:"gifts"},
+  {title:"البرفانات 🌹",text:"اتعرف على أسماء متنوعة في عالم العطور.",panel:"perfumes"},
+  {title:"الإكسسوارات 💎",text:"استكشف صور الإكسسوارات واللمسات الأنيقة.",panel:"accessories"},
+  {title:"وصلنا للتواصل ❤️",text:"تقدر تتواصل مع المحل مباشرة على واتساب.",panel:"contact"}
+];
+let tourIndex=-1;
+function nextTour(){
+  tourIndex++;
+  if(tourIndex>=tourSteps.length){endTour();return}
+  const step=tourSteps[tourIndex];
+  document.getElementById("tourStep").textContent=`الخطوة ${tourIndex+1} من ${tourSteps.length}`;
+  document.getElementById("tourTitle").textContent=step.title;
+  document.getElementById("tourText").textContent=step.text;
+  document.getElementById("tourNext").textContent=tourIndex===tourSteps.length-1?"إنهاء الجولة":"التالي ←";
+  if(step.panel){
+    document.getElementById("tourNext").onclick=()=>{
+      if(step.panel==="contact"){
+        endTour();
+        document.getElementById("contact").scrollIntoView({behavior:"smooth"});
+      }else{
+        openPanel(step.panel);
+        document.getElementById("tourNext").onclick=nextTour;
+      }
+    };
+  }else{
+    document.getElementById("tourNext").onclick=nextTour;
+  }
+}
+function endTour(){
+  tourIndex=-1;
+  document.getElementById("tourStep").textContent="جولة تعريفية";
+  document.getElementById("tourTitle").textContent="شكرًا إنك خدت لفة معانا ❤️";
+  document.getElementById("tourText").textContent="نتمنى تكون استمتعت بالتعرف على صانع البهجة.";
+  document.getElementById("tourNext").textContent="ابدأ الجولة من جديد";
+  document.getElementById("tourNext").onclick=nextTour;
+  showHome();
+}
+
+/* مشاركة موقع المحل */
+async function shareLocation(){
+  const shareData={
+    title:"موقع صانع البهجة",
+    text:"ده موقع صانع البهجة على خرائط Google 📍",
+    url:MAP_LINK
+  };
+  try{
+    if(navigator.share){
+      await navigator.share(shareData);
+    }else if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(MAP_LINK);
+      alert("تم نسخ رابط موقع المحل. تقدر تبعته لأي حد.");
+    }else{
+      window.prompt("انسخ رابط موقع المحل:",MAP_LINK);
+    }
+  }catch(error){
+    if(error.name!=="AbortError"){
+      window.prompt("انسخ رابط موقع المحل:",MAP_LINK);
+    }
+  }
+}
+
+/* زر العودة للأعلى */
+const topBtn=document.getElementById("topBtn");
+window.addEventListener("scroll",()=>{
+  topBtn.style.display=window.scrollY>450?"block":"none";
+});
+
+/* ظهور العناصر أثناء التصفح */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+</script>
+</body>
+</html>
